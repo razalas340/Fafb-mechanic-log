@@ -5,6 +5,7 @@
   <meta name="theme-color" content="#b30000" />
   <title>FAF Mechanic Log</title>
   <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" />
   <style>
     body {
       font-family: sans-serif;
@@ -82,5 +83,10 @@
     });
 
     loadEntries();
+
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
   </script></body>
 </html>
