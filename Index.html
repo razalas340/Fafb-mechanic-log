@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#b30000" />
+  <title>FAF Mechanic Log</title>
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 1em;
+      background: #f7f7f7;
+    }
+    h1 {
+      color: #b30000;
+    }
+    label {
+      display: block;
+      margin-top: 1em;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 0.75em;
+      margin-top: 0.25em;
+      font-size: 1em;
+    }
+    button {
+      background-color: #b30000;
+      color: white;
+      border: none;
+      margin-top: 1.5em;
+    }
+    .entry {
+      background: white;
+      padding: 1em;
+      margin-top: 1em;
+      border-left: 4px solid #b30000;
+    }
+  </style>
+</head>
+<body>
+  <h1>FAF Mechanic Log</h1>
+  <form id="logForm">
+    <label>Make
+      <input type="text" name="make" required />
+    </label>
+    <label>Year
+      <input type="text" name="year" required />
+    </label>
+    <label>Model
+      <input type="text" name="model" required />
+    </label>
+    <label>Work Description
+      <textarea name="description" rows="4" required></textarea>
+    </label>
+    <button type="submit">Submit</button>
+  </form>  <div id="entries"></div>  <script>
+    const form = document.getElementById('logForm');
+    const entriesDiv = document.getElementById('entries');
+
+    const loadEntries = () => {
+      const entries = JSON.parse(localStorage.getItem('fafEntries')) || [];
+      entriesDiv.innerHTML = '';
+      entries.forEach(entry => {
+        const div = document.createElement('div');
+        div.className = 'entry';
+        div.innerHTML = `<strong>${entry.make} ${entry.year} ${entry.model}</strong><br/>${entry.description}`;
+        entriesDiv.appendChild(div);
+      });
+    };
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const entry = Object.fromEntries(formData.entries());
+      const entries = JSON.parse(localStorage.getItem('fafEntries')) || [];
+      entries.push(entry);
+      localStorage.setItem('fafEntries', JSON.stringify(entries));
+      form.reset();
+      loadEntries();
+    });
+
+    loadEntries();
+  </script></body>
+</html>
